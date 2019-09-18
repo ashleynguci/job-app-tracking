@@ -9,7 +9,7 @@ export interface Job {
 export enum JobStatus {
   OPEN = 'OPEN',
   IN_PROGRESS = 'IN_PROGRESS',
-  ACCEPT = 'ACCEPT',
+  ACCEPTED = 'ACCEPTED',
 
   DECLINE = 'DECLINE',
 }

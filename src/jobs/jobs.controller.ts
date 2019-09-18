@@ -1,21 +1,47 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { Job } from './job.model';
+import { Job, JobStatus } from './job.model';
+import { CreateJobDto } from './dto/create-job.dto';
+import { GetJobFilterDto } from './dto/get-job-filter.dto';
 
 @Controller('jobs')
 export class JobsController {
   constructor(private jobsService: JobsService) {}
 
   @Get()
-  getAllJobs(): Job[] {
-    return this.jobsService.getAllJobs();
+  getJobs(@Query() filterDto: GetJobFilterDto): Job[] {
+    if (Object.keys(filterDto).length) {
+      return this.jobsService.getJobWithFilter(filterDto);
+    } else {
+      return this.jobsService.getAllJobs();
+    }
+  }
+
+  @Get('/:id')
+  getJobById(@Param('id') id: string): Job {
+    return this.jobsService.getJobById(id);
   }
   @Post()
-  createJobs(
-    @Body('company') company: string,
-    @Body('position') position: string,
-    @Body('requirements') requirements: string,
-  ): Job {
-    return this.jobsService.createJobs(company, position, requirements);
+  createJob(@Body() createJobDto: CreateJobDto): Job {
+    return this.jobsService.createJob(createJobDto);
+  }
+
+  @Delete('/:id')
+  deleteJob(@Param('id') id: string): void {
+    return this.jobsService.deleteJobs(id);
+  }
+
+  @Patch('/:id/status')
+  updateJob(@Param('id') id: string, @Body('status') status: JobStatus): Job {
+    return this.jobsService.updateJob(id, status);
   }
 }
