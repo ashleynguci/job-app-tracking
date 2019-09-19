@@ -14,6 +14,7 @@ import { JobsService } from './jobs.service';
 import { Job, JobStatus } from './job.model';
 import { CreateJobDto } from './dto/create-job.dto';
 import { GetJobFilterDto } from './dto/get-job-filter.dto';
+import { JobStatusValidationPipe } from './pipes/job-status-validation.pipe';
 
 @Controller('jobs')
 export class JobsController {
@@ -44,7 +45,10 @@ export class JobsController {
   }
 
   @Patch('/:id/status')
-  updateJob(@Param('id') id: string, @Body('status') status: JobStatus): Job {
+  updateJob(
+    @Param('id') id: string,
+    @Body('status', JobStatusValidationPipe) status: JobStatus,
+  ): Job {
     return this.jobsService.updateJob(id, status);
   }
 }
