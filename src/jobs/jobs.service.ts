@@ -51,7 +51,9 @@ export class JobsService {
   }
 
   deleteJobs(id: string): void {
-    this.jobs = this.jobs.filter(job => job.id !== id);
+    const found = this.getJobById(id);
+
+    this.jobs = this.jobs.filter(job => job.id !== found.id);
   }
 
   updateJob(id: string, status: JobStatus): Job {
