@@ -7,6 +7,8 @@ import {
   Delete,
   Patch,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { Job, JobStatus } from './job.model';
@@ -31,6 +33,7 @@ export class JobsController {
     return this.jobsService.getJobById(id);
   }
   @Post()
+  @UsePipes(ValidationPipe)
   createJob(@Body() createJobDto: CreateJobDto): Job {
     return this.jobsService.createJob(createJobDto);
   }
