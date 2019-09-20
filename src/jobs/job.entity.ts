@@ -1,5 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { JobStatus } from './job.model';
+import { JobStatus } from './job-status.enum';
+
 @Entity()
 export class Job extends BaseEntity {
   @PrimaryGeneratedColumn()
