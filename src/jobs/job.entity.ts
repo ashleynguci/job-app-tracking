@@ -8,6 +8,7 @@ export class Job extends BaseEntity {
 
   @Column()
   company: string;
+
   @Column()
   position: string;
 

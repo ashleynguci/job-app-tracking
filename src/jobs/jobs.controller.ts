@@ -17,6 +17,7 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { GetJobFilterDto } from './dto/get-job-filter.dto';
 import { JobStatusValidationPipe } from './pipes/job-status-validation.pipe';
 import { Job } from './job.entity';
+import { JobStatus } from './job-status.enum';
 
 @Controller('jobs')
 export class JobsController {
@@ -30,27 +31,32 @@ export class JobsController {
   //     return this.jobsService.getAllJobs();
   //   }
   // }
+  @Get()
+  getJob(@Query(ValidationPipe) filterDto: GetJobFilterDto): Promise<Job[]> {
+    return this.jobsService.getJob(filterDto);
+  }
 
   @Get('/:id')
   getJobById(@Param('id', ParseIntPipe) id: number): Promise<Job> {
     return this.jobsService.getJobById(id);
   }
+
   @Post()
   @UsePipes(ValidationPipe)
   createJob(@Body() createJobDto: CreateJobDto): Promise<Job> {
     return this.jobsService.createJob(createJobDto);
   }
 
-  // @Delete('/:id')
-  // deleteJob(@Param('id') id: string): void {
-  //   return this.jobsService.deleteJobs(id);
-  // }
+  @Delete('/:id')
+  deleteJob(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.jobsService.deleteJobs(id);
+  }
 
-  // @Patch('/:id/status')
-  // updateJob(
-  //   @Param('id') id: string,
-  //   @Body('status', JobStatusValidationPipe) status: JobStatus,
-  // ): Job {
-  //   return this.jobsService.updateJob(id, status);
-  // }
+  @Patch('/:id/status')
+  updateJob(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('status', JobStatusValidationPipe) status: JobStatus,
+  ): Promise<Job> {
+    return this.jobsService.updateJob(id, status);
+  }
 }

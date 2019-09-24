@@ -1,6 +1,6 @@
-import { JobStatus } from '../job.model';
 import { IsOptional, IsIn, IsNotEmpty } from 'class-validator';
-import { JobStatusValidationPipe } from '../pipes/job-status-validation.pipe';
+// import { JobStatusValidationPipe } from '../pipes/job-status-validation.pipe';
+import { JobStatus } from '../job-status.enum';
 
 export class GetJobFilterDto {
   @IsOptional()

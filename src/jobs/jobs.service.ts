@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 // import { Job, JobStatus } from './job.model';
-import * as uuid from 'uuid/v1';
+//
 import { CreateJobDto } from './dto/create-job.dto';
 import { GetJobFilterDto } from './dto/get-job-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +13,9 @@ export class JobsService {
     @InjectRepository(JobRepository)
     private jobRepository: JobRepository,
   ) {}
+  async getJob(filterDto: GetJobFilterDto): Promise<Job[]> {
+    return this.jobRepository.getJob(filterDto);
+  }
   //
   // getAllJobs(): Job[] {
   //   return this.jobs;
@@ -51,27 +54,19 @@ export class JobsService {
   async createJob(createJobDto: CreateJobDto): Promise<Job> {
     return this.jobRepository.createJob(createJobDto);
   }
-  // createJob(createJobDto: CreateJobDto): Job {
-  //   const { company, position, requirements } = createJobDto;
-  //   //deconstructuring ES6
-  //   const job: Job = {
-  //     id: uuid(),
-  //     company,
-  //     position,
-  //     requirements,
-  //     status: JobStatus.OPEN,
-  //   };
-  //   this.jobs.push(job);
-  //   return job;
-  // }
 
-  // deleteJobs(id: string): void {
-  //   const found = this.getJobById(id);
-  //   this.jobs = this.jobs.filter(job => job.id !== found.id);
-  // }
-  // updateJob(id: string, status: JobStatus): Job {
-  //   const job = this.getJobById(id);
-  //   job.status = status;
-  //   return job;
-  // }
+  async deleteJobs(id: number): Promise<void> {
+    const result = await this.jobRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Job with ID ${id} not found`);
+    }
+  }
+
+  async updateJob(id: number, status: JobStatus): Promise<Job> {
+    const job = await this.getJobById(id);
+    job.status = status;
+    await job.save();
+    return job;
+  }
 }
