@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 // import { Job, JobStatus } from './job.model';
@@ -18,8 +19,10 @@ import { GetJobFilterDto } from './dto/get-job-filter.dto';
 import { JobStatusValidationPipe } from './pipes/job-status-validation.pipe';
 import { Job } from './job.entity';
 import { JobStatus } from './job-status.enum';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('jobs')
+@UseGuards(AuthGuard())
 export class JobsController {
   constructor(private jobsService: JobsService) {}
 
