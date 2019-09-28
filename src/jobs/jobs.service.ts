@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { JobRepository } from './job.repo';
 import { Job } from './job.entity';
 import { JobStatus } from './job-status.enum';
+import { User } from '../auth/user.entity';
 @Injectable()
 export class JobsService {
   constructor(
@@ -51,8 +52,8 @@ export class JobsService {
   // }
   // //return an Object
 
-  async createJob(createJobDto: CreateJobDto): Promise<Job> {
-    return this.jobRepository.createJob(createJobDto);
+  async createJob(createJobDto: CreateJobDto, user: User): Promise<Job> {
+    return this.jobRepository.createJob(createJobDto, user);
   }
 
   async deleteJobs(id: number): Promise<void> {

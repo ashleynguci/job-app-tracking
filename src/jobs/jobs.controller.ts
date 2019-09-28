@@ -20,6 +20,8 @@ import { JobStatusValidationPipe } from './pipes/job-status-validation.pipe';
 import { Job } from './job.entity';
 import { JobStatus } from './job-status.enum';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/get-user.decorator';
+import { User } from '../auth/user.entity';
 
 @Controller('jobs')
 @UseGuards(AuthGuard())
@@ -46,8 +48,11 @@ export class JobsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  createJob(@Body() createJobDto: CreateJobDto): Promise<Job> {
-    return this.jobsService.createJob(createJobDto);
+  createJob(
+    @Body() createJobDto: CreateJobDto,
+    @GetUser() user: User,
+  ): Promise<Job> {
+    return this.jobsService.createJob(createJobDto,user);
   }
 
   @Delete('/:id')
