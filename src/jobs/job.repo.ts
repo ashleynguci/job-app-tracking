@@ -7,9 +7,11 @@ import { User } from '../auth/user.entity';
 
 @EntityRepository(Job)
 export class JobRepository extends Repository<Job> {
-  async getJob(filterDto: GetJobFilterDto): Promise<Job[]> {
+  async getJob(filterDto: GetJobFilterDto, user: User): Promise<Job[]> {
     const { status, search } = filterDto;
     const query = this.createQueryBuilder('job');
+
+    query.where('job.userId =:userId', { userId: user.id });
 
     if (status) {
       query.andWhere('job.status = :status', { status });

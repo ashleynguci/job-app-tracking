@@ -14,8 +14,8 @@ export class JobsService {
     @InjectRepository(JobRepository)
     private jobRepository: JobRepository,
   ) {}
-  async getJob(filterDto: GetJobFilterDto): Promise<Job[]> {
-    return this.jobRepository.getJob(filterDto);
+  async getJob(filterDto: GetJobFilterDto, user: User): Promise<Job[]> {
+    return this.jobRepository.getJob(filterDto, user);
   }
   //
   // getAllJobs(): Job[] {

@@ -27,4 +27,7 @@ export class Job extends BaseEntity {
 
   @ManyToOne(type => User, user => user.jobs, { eager: false })
   user: User;
+
+  @Column()
+  userId: number;
 }

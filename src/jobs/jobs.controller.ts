@@ -37,8 +37,11 @@ export class JobsController {
   //   }
   // }
   @Get()
-  getJob(@Query(ValidationPipe) filterDto: GetJobFilterDto): Promise<Job[]> {
-    return this.jobsService.getJob(filterDto);
+  getJob(
+    @Query(ValidationPipe) filterDto: GetJobFilterDto,
+    @GetUser() user: User,
+  ): Promise<Job[]> {
+    return this.jobsService.getJob(filterDto, user);
   }
 
   @Get('/:id')
@@ -52,7 +55,7 @@ export class JobsController {
     @Body() createJobDto: CreateJobDto,
     @GetUser() user: User,
   ): Promise<Job> {
-    return this.jobsService.createJob(createJobDto,user);
+    return this.jobsService.createJob(createJobDto, user);
   }
 
   @Delete('/:id')
