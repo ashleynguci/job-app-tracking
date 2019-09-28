@@ -36,8 +36,10 @@ export class JobsService {
   //   }
   //   return jobs;
   // }
-  async getJobById(id: number): Promise<Job> {
-    const found = await this.jobRepository.findOne(id);
+  async getJobById(id: number, user: User): Promise<Job> {
+    const found = await this.jobRepository.findOne({
+      where: { id, userId: user.id },
+    });
     if (!found) {
       throw new NotFoundException(`Job with ID ${id} not found`);
     }
@@ -64,8 +66,8 @@ export class JobsService {
     }
   }
 
-  async updateJob(id: number, status: JobStatus): Promise<Job> {
-    const job = await this.getJobById(id);
+  async updateJob(id: number, status: JobStatus, user: User): Promise<Job> {
+    const job = await this.getJobById(id, user);
     job.status = status;
     await job.save();
     return job;

@@ -45,8 +45,11 @@ export class JobsController {
   }
 
   @Get('/:id')
-  getJobById(@Param('id', ParseIntPipe) id: number): Promise<Job> {
-    return this.jobsService.getJobById(id);
+  getJobById(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<Job> {
+    return this.jobsService.getJobById(id, user);
   }
 
   @Post()
@@ -67,7 +70,8 @@ export class JobsController {
   updateJob(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', JobStatusValidationPipe) status: JobStatus,
+    @GetUser() user: User,
   ): Promise<Job> {
-    return this.jobsService.updateJob(id, status);
+    return this.jobsService.updateJob(id, status, user);
   }
 }
