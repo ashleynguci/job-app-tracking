@@ -1,5 +1,12 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+} from 'typeorm';
 import { JobStatus } from './job-status.enum';
+import { User } from '../auth/user.entity';
 
 @Entity()
 export class Job extends BaseEntity {
@@ -17,4 +24,7 @@ export class Job extends BaseEntity {
 
   @Column()
   status: JobStatus;
+
+  @ManyToOne(type => User, user => user.jobs, { eager: false })
+  user: User;
 }
